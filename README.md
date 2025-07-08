@@ -139,8 +139,6 @@ Twitter|https://twitter.com/yourname|fab fa-twitter
 
 > 可在此处记录每次主题更新的内容，便于用户了解新特性和修复内容。
 
-- v1.0.0
-  - 首次发布，支持全部核心功能
 
 ---
 
