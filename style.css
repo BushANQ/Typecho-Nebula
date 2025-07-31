@@ -726,16 +726,6 @@ table tr:hover {
   overflow: hidden;
 }
 
-.widget::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-}
-
 .widget:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px var(--shadow-medium);
@@ -1121,3 +1111,199 @@ table tr:hover {
 .p-1 { padding: 0.5rem; }
 .p-2 { padding: 1rem; }
 .p-3 { padding: 1.5rem; }
+
+/* 侧边栏卡片毛玻璃效果 */
+.widget {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  color: var(--text-primary);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10),
+              inset 0 1px 0 rgba(255,255,255,0.08);
+  overflow: hidden;
+  transition: all .5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.widget:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border: 1.5px solid rgba(255,255,255,0.18);
+}
+
+[data-theme="dark"] .widget {
+  background: rgba(30, 32, 40, 0.32);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25),
+              inset 0 1px 0 rgba(255,255,255,0.04);
+}
+[data-theme="dark"] .widget:hover {
+  background: rgba(30, 32, 40, 0.45);
+  border: 1.5px solid rgba(255,255,255,0.13);
+}
+
+/* 侧边栏标题发光/渐变 */
+.widget-title {
+  color: var(--text-primary) !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  text-fill-color: var(--text-primary) !important;
+  text-shadow: 0 2px 8px rgba(77,171,247,0.10);
+}
+
+/* 侧边栏列表项悬浮高亮 */
+.widget-list a:hover {
+  background: rgba(255,255,255,0.10);
+  color: var(--accent-primary);
+  transform: translateX(6px);
+}
+[data-theme="dark"] .widget-list a:hover {
+  background: rgba(77,171,247,0.10);
+  color: #fff;
+}
+
+/* --------- 侧边栏卡片顶部彩条与内容间距修正 --------- */
+.widget {
+  margin-bottom: 2rem;
+  padding-top: 0.5rem;
+  box-sizing: border-box;
+}
+@media (max-width: 991px) {
+  .widget {
+    margin-bottom: 1.2rem;
+    border-radius: 12px;
+    padding-top: 0.3rem;
+  }
+}
+
+.widget-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+/* --------- 侧边栏列表项hover错位修正 --------- */
+.widget-list a {
+  box-sizing: border-box;
+  padding-right: 1rem;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.widget-list a:hover {
+  padding-left: 1.5rem;
+  transform: none;
+}
+
+/* --------- 侧边栏与主内容区对齐 --------- */
+#secondary {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  box-sizing: border-box;
+}
+@media (max-width: 991px) {
+  #secondary {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* --------- 主内容区卡片圆角/阴影/间距 --------- */
+.post, .post-card, .single-post, .archive-post-item, .page, .single-page {
+  margin-bottom: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px var(--shadow-light);
+  overflow: hidden;
+}
+@media (max-width: 991px) {
+  .post, .post-card, .single-post, .archive-post-item, .page, .single-page {
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+  }
+}
+
+/* --------- 评论区卡片/输入框/按钮优化 --------- */
+#comments, .respond {
+  border-radius: 18px;
+  box-shadow: 0 4px 20px var(--shadow-light);
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+@media (max-width: 991px) {
+  #comments, .respond {
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+  }
+}
+#comment-form input, #comment-form textarea, #comment-form select {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow-light);
+  border: 1.5px solid var(--border-color);
+}
+#comment-form input:focus, #comment-form textarea:focus, #comment-form select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(77,171,247,0.10);
+}
+#comment-form .submit {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+/* --------- 目录浮动层错位修正 --------- */
+.post-toc {
+  z-index: 10;
+  box-shadow: 0 4px 20px var(--shadow-light);
+}
+@media (max-width: 991px) {
+  .post-toc {
+    display: none !important;
+  }
+}
+
+/* --------- 头部/页脚毛玻璃透明度适配 --------- */
+#header, #footer, .site-footer {
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  background: rgba(255,255,255,0.85);
+}
+[data-theme="dark"] #header, [data-theme="dark"] #footer, [data-theme="dark"] .site-footer {
+  background: rgba(30,32,40,0.85);
+}
+
+/* --------- 移动端圆角/阴影/顶部条适配 --------- */
+@media (max-width: 767px) {
+  .widget {
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    padding-top: 0.2rem;
+  }
+  .post, .post-card, .single-post, .archive-post-item, .page, .single-page {
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+  }
+  #comments, .respond {
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+  }
+}
+
+/* --------- 归档/空状态/无内容对齐 --------- */
+.no-posts-content, .empty-content {
+  border-radius: 18px;
+  box-shadow: 0 4px 20px var(--shadow-light);
+  margin: 0 auto 2rem auto;
+  max-width: 420px;
+  padding: 2.5rem 1.5rem;
+}
+@media (max-width: 767px) {
+  .no-posts-content, .empty-content {
+    border-radius: 8px;
+    padding: 1.2rem 0.5rem;
+  }
+}
+
+/* --------- 其他细节 --------- */
+.main-layout {
+  align-items: flex-start;
+}
+
+/* 保证所有卡片内容不贴边 */
+.widget, .post, .post-card, .single-post, .archive-post-item, .page, .single-page, #comments, .respond {
+  box-sizing: border-box;
+}

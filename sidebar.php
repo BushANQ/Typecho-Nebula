@@ -254,26 +254,14 @@
     box-shadow: 0 4px 20px var(--shadow-light);
 }
 
-.widget::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-    opacity: 0;
-    transition: opacity var(--transition-fast) ease;
-}
+
 
 .widget:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 30px var(--shadow-medium);
 }
 
-.widget:hover::before {
-    opacity: 1;
-}
+
 
 /* Widget头部 */
 .widget-header {
@@ -288,7 +276,9 @@
     margin: 0;
     padding: 1.25rem 1.5rem;
     background: var(--bg-secondary);
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    text-fill-color: var(--text-primary) !important;
     font-size: 1.1rem;
     font-weight: 600;
     position: relative;
