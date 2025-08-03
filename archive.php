@@ -59,7 +59,28 @@
                             <span class="stat-label">条评论</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-number" id="viewCount">-</span>
+                            <?php 
+                            $viewCount = 0;
+                            if ($this->is('category')) {
+                                $categoryId = $this->getArchiveSlug();
+                                $category = null;
+                                Typecho_Widget::widget('Widget_Metas_Category_List')->to($categories);
+                                while ($categories->next()) {
+                                    if ($categories->slug == $categoryId) {
+                                        $viewCount = getCategoryViews($categories->mid);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // 对于非分类页面，可以计算所有文章的浏览量
+                                $db = Typecho_Db::get();
+                                $result = $db->fetchRow($db->select(array('SUM(views)' => 'sumviews'))
+                                    ->from('table.contents')
+                                    ->where('table.contents.status = ?', 'publish'));
+                                $viewCount = intval($result['sumviews']);
+                            }
+                            ?>
+                            <span class="stat-number" id="viewCount" data-views="<?php echo $viewCount; ?>">-</span>
                             <span class="stat-label">次浏览</span>
                         </div>
                     </div>
@@ -90,9 +111,6 @@
                     显示方式：
                 </label>
                 <div class="view-toggle">
-                    <button class="view-btn" data-view="grid" title="网格视图">
-                        <i class="fas fa-th"></i>
-                    </button>
                     <button class="view-btn active" data-view="list" title="列表视图">
                         <i class="fas fa-list"></i>
                     </button>
@@ -129,7 +147,7 @@
                                  itemscope itemtype="http://schema.org/BlogPosting">
                             
                             <!-- 网格视图内容 -->
-                            <div class="post-grid-content">
+                            <div class="post-grid-content" style="display: none;">
                                 <!-- 文章缩略图 -->
                                 <div class="post-thumbnail">
                                     <?php $thumbnail = getPostThumbnail($this); ?>
@@ -255,16 +273,7 @@
                                             <a href="<?php $this->permalink(); ?>"><?php $this->title(); ?></a>
                                         </h3>
                                         <div class="list-meta">
-                                            <span><?php echo formatTime($this->created); ?></span>
-                                            <span>•</span>
                                             <span><?php $this->category(','); ?></span>
-                                            <span>•</span>
-                                            <div class="list-actions">
-                                                <div class="action-item">
-                                                    <i class="fas fa-comments"></i>
-                                                    <span><?php $this->commentsNum('0', '1', '%d'); ?></span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     
@@ -458,6 +467,12 @@
     font-weight: 700;
     margin: 0 0 1rem;
     text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    /* 覆盖style.css中的透明文字效果 */
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: white;
+    background-clip: initial;
+    color: white;
 }
 
 .archive-description {
@@ -816,6 +831,10 @@
     text-decoration: none;
     margin-right: 0.5rem;
     transition: all var(--transition-fast) ease;
+    /* 确保不使用透明文字效果 */
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: white;
+    background-clip: initial;
 }
 
 .post-category a::after {
@@ -838,6 +857,11 @@
     color: var(--text-primary);
     text-decoration: none;
     transition: color var(--transition-fast) ease;
+    /* 覆盖style.css中的透明文字效果 */
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
 }
 
 .post-title a::after {
@@ -999,6 +1023,10 @@
 .list-meta a {
     color: inherit;
     text-decoration: none;
+    /* 确保不使用透明文字效果 */
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: inherit;
+    background-clip: initial;
 }
 
 .list-meta a::after {
@@ -1132,6 +1160,10 @@
 .timeline-meta a {
     color: inherit;
     text-decoration: none;
+    /* 确保不使用透明文字效果 */
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: inherit;
+    background-clip: initial;
 }
 
 .timeline-meta a::after {
@@ -1427,21 +1459,56 @@
         gap: 0.5rem;
     }
     
+    /* 优化手机端文章卡片 */
     .post-list-content {
         flex-direction: column;
     }
     
     .list-thumbnail {
         width: 100%;
-        height: 120px;
+        height: 100px; /* 减小高度 */
+    }
+    
+    .list-content {
+        padding: 0.8rem; /* 减小内边距 */
+    }
+    
+    .list-title {
+        font-size: 1.1rem; /* 减小标题字体 */
+        margin-bottom: 0.3rem; /* 减小下边距 */
+    }
+    
+    .list-meta {
+        font-size: 0.8rem; /* 减小元数据字体 */
+    }
+    
+    .list-excerpt {
+        font-size: 0.9rem; /* 减小摘要字体 */
+        margin: 0.5rem 0; /* 减小上下边距 */
+        line-height: 1.4; /* 减小行高 */
+        max-height: 4.2em; /* 限制高度为3行 */
+        overflow: hidden;
+    }
+    
+    /* 隐藏手机端不必要的元素 */
+    .list-footer .list-actions,
+    .list-meta .action-item,
+    .list-meta .separator {
+        display: none;
     }
     
     .list-footer {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+        margin-top: 0.5rem; /* 减小上边距 */
     }
     
+    .archive-post-item {
+        margin-bottom: 1rem; /* 减小文章卡片间距 */
+    }
+    
+    /* 时间线视图优化 */
     .view-timeline {
         padding-left: 1rem;
     }
@@ -1461,6 +1528,21 @@
     .timeline-date {
         min-width: auto;
         padding: 0.5rem 1rem;
+    }
+    
+    .timeline-content {
+        padding: 0.8rem; /* 减小内边距 */
+    }
+    
+    .timeline-title {
+        font-size: 1.1rem; /* 减小标题字体 */
+    }
+    
+    .timeline-excerpt {
+        font-size: 0.9rem; /* 减小摘要字体 */
+        line-height: 1.4; /* 减小行高 */
+        max-height: 4.2em; /* 限制高度 */
+        overflow: hidden;
     }
     
     .empty-content {
@@ -1578,7 +1660,11 @@ function initArchivePage() {
     // 更新统计显示
     document.getElementById('postCount').textContent = postItems.length;
     document.getElementById('commentCount').textContent = commentCounts;
-    document.getElementById('viewCount').textContent = Math.floor(Math.random() * 10000) + 1000;
+    
+    // 使用PHP传递的真实浏览量数据
+    const viewCountElement = document.getElementById('viewCount');
+    const viewCount = parseInt(viewCountElement.getAttribute('data-views')) || 0;
+    viewCountElement.textContent = viewCount;
 }
 
 function animateStats() {
@@ -1606,6 +1692,21 @@ function initViewToggle() {
     const postsContainer = document.getElementById('postsContainer');
     const postItems = document.querySelectorAll('.archive-post-item');
     
+    // 初始化时隐藏网格视图内容，显示列表视图内容
+    postItems.forEach(item => {
+        const gridContent = item.querySelector('.post-grid-content');
+        const listContent = item.querySelector('.post-list-content');
+        
+        if (gridContent) gridContent.style.display = 'none';
+        if (listContent) listContent.style.display = 'flex';
+    });
+    
+    // 确保列表视图按钮默认处于激活状态
+    const listViewBtn = document.querySelector('.view-btn[data-view="list"]');
+    if (listViewBtn) {
+        listViewBtn.classList.add('active');
+    }
+    
     viewBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             // 更新按钮状态
@@ -1620,24 +1721,20 @@ function initViewToggle() {
             
             // 显示/隐藏对应内容
             postItems.forEach(item => {
-                const gridContent = item.querySelector('.post-grid-content');
                 const listContent = item.querySelector('.post-list-content');
                 const timelineContent = item.querySelector('.post-timeline-content');
                 
                 // 隐藏所有内容
-                gridContent.style.display = 'block';
-                listContent.style.display = 'none';
-                timelineContent.style.display = 'none';
+                if (listContent) listContent.style.display = 'none';
+                if (timelineContent) timelineContent.style.display = 'none';
                 
                 // 显示对应内容
                 switch (viewType) {
                     case 'list':
-                        gridContent.style.display = 'none';
-                        listContent.style.display = 'flex';
+                        if (listContent) listContent.style.display = 'flex';
                         break;
                     case 'timeline':
-                        gridContent.style.display = 'none';
-                        timelineContent.style.display = 'flex';
+                        if (timelineContent) timelineContent.style.display = 'flex';
                         break;
                 }
             });

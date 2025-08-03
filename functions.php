@@ -5,7 +5,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  * 
  * @package Nebula
  * @author BushSEC
- * @version 1.0.0
+ * @version 1.0.1
  * @link https://bushsec.cn
  */
  
@@ -151,4 +151,60 @@ function getExcerpt($content, $length = 200) {
     }
     
     return mb_substr($content, 0, $length, 'UTF-8') . '...';
+}
+
+// 文章浏览量统计函数
+function getPostViews($archive) {
+    $cid = $archive->cid;
+    $db = Typecho_Db::get();
+    $prefix = $db->getPrefix();
+    
+    // 从数据库中获取浏览量字段
+    if (!array_key_exists('views', $db->fetchRow($db->select()->from('table.contents')))) {
+        // 如果表中没有views字段，则创建一个
+        $db->query('ALTER TABLE `' . $prefix . 'contents` ADD `views` INT(10) DEFAULT 0;');
+    }
+    
+    // 获取浏览量
+    $row = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
+    $views = intval($row['views']);
+    
+    // 如果是文章页面，则更新浏览量
+    if ($archive->is('single')) {
+        $views = $views + 1;
+        $db->query($db->update('table.contents')->rows(array('views' => $views))->where('cid = ?', $cid));
+    }
+    
+    return $views;
+}
+
+// 格式化浏览量数字
+function formatViewsNum($views) {
+    if ($views >= 1000000) {
+        return round($views / 1000000, 1) . 'M';
+    } elseif ($views >= 1000) {
+        return round($views / 1000, 1) . 'K';
+    } else {
+        return $views;
+    }
+}
+
+// 获取分类下所有文章的浏览量总和
+function getCategoryViews($categoryId) {
+    $db = Typecho_Db::get();
+    $prefix = $db->getPrefix();
+    
+    // 确保views字段存在
+    if (!array_key_exists('views', $db->fetchRow($db->select()->from('table.contents')))) {
+        $db->query('ALTER TABLE `' . $prefix . 'contents` ADD `views` INT(10) DEFAULT 0;');
+    }
+    
+    // 查询分类下所有文章的浏览量总和
+    $result = $db->fetchRow($db->select(array('SUM(views)' => 'sumviews'))
+        ->from('table.contents', 'table.contents.cid = table.relationships.cid')
+        ->join('table.relationships', 'table.contents.cid = table.relationships.cid')
+        ->where('table.relationships.mid = ?', $categoryId)
+        ->where('table.contents.status = ?', 'publish'));
+    
+    return intval($result['sumviews']);
 }

@@ -83,7 +83,7 @@
                                 
                                 <div class="meta-item">
                                     <i class="fas fa-eye"></i>
-                                    <span class="view-count" data-post-id="<?php $this->cid(); ?>">-</span>
+                                    <span class="view-count"><?php echo formatViewsNum(getPostViews($this)); ?> 阅读</span>
                                 </div>
                             </div>
                         </div>
@@ -1552,18 +1552,8 @@ function initCodeCopy() {
 
 // 阅读进度
 function initReadingProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 3px;
-        background: var(--gradient-primary);
-        z-index: 1001;
-        transition: width 0.1s;
-    `;
-    document.body.appendChild(progressBar);
+    const progressBar = document.getElementById('readingProgress');
+    if (!progressBar) return;
     
     window.addEventListener('scroll', () => {
         const scrollTop = window.pageYOffset;

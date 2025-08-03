@@ -158,458 +158,6 @@
     </div>
 </footer>
 
-<style>
-/* Footer 样式 */
-.site-footer {
-    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-    border-top: 1px solid var(--border-color);
-    margin-top: 4rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.site-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-}
-
-/* Footer Main */
-.footer-main {
-    padding: 3rem 0 2rem;
-    position: relative;
-}
-
-.footer-section {
-    margin-bottom: 2rem;
-}
-
-/* 网站信息区域 */
-.about-section .footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.footer-logo .logo-img {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-}
-
-.footer-logo .logo-icon {
-    font-size: 2rem;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.footer-logo .logo-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.footer-description {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-.footer-description p {
-    margin-bottom: 1rem;
-}
-
-.site-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    font-size: 0.9rem;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.stat-item i {
-    color: var(--accent-primary);
-    font-size: 0.8rem;
-}
-
-/* 社交链接 */
-.footer-social {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.social-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: all var(--transition-fast) ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.social-link::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-primary);
-    opacity: 0;
-    transition: opacity var(--transition-fast) ease;
-}
-
-.social-link i {
-    position: relative;
-    z-index: 1;
-    transition: all var(--transition-fast) ease;
-}
-
-.social-link::after {
-    display: none;
-}
-
-.social-link:hover {
-    transform: translateY(-2px) scale(1.1);
-    box-shadow: 0 4px 15px var(--shadow-medium);
-    border-color: transparent;
-    color: white;
-}
-
-.social-link:hover::before {
-    opacity: 1;
-}
-
-/* Footer 标题 */
-.footer-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.footer-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 30px;
-    height: 2px;
-    background: var(--gradient-primary);
-    border-radius: 1px;
-}
-
-.footer-title i {
-    color: var(--accent-primary);
-    font-size: 1rem;
-}
-
-/* Footer 链接 */
-.footer-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.75rem;
-}
-
-.footer-links a {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    padding: 0.5rem 0;
-    transition: all var(--transition-fast) ease;
-    border-radius: var(--radius-sm);
-}
-
-.footer-links a::after {
-    display: none;
-}
-
-.footer-links a:hover {
-    color: var(--accent-primary);
-    background: rgba(0, 123, 255, 0.1);
-    transform: translateX(5px);
-    padding-left: 0.75rem;
-}
-
-.footer-links i {
-    font-size: 0.8rem;
-    width: 16px;
-    text-align: center;
-    color: var(--accent-primary);
-}
-
-/* 最新文章 */
-.footer-recent-posts {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.recent-post-item {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.recent-post-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.recent-post-link {
-    display: block;
-    text-decoration: none;
-    transition: all var(--transition-fast) ease;
-}
-
-.recent-post-link::after {
-    display: none;
-}
-
-.recent-post-link:hover {
-    transform: translateX(5px);
-}
-
-.recent-post-title {
-    display: block;
-    color: var(--text-primary);
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    line-height: 1.4;
-    transition: color var(--transition-fast) ease;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.recent-post-link:hover .recent-post-title {
-    color: var(--accent-primary);
-}
-
-.recent-post-date {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-}
-
-.recent-post-date i {
-    font-size: 0.7rem;
-    color: var(--accent-primary);
-}
-
-/* Footer Bottom */
-.footer-bottom {
-    background: var(--bg-primary);
-    border-top: 1px solid var(--border-color);
-    padding: 1.5rem 0;
-}
-
-.footer-bottom-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.copyright-text {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.copyright-text p {
-    margin: 0;
-}
-
-.copyright-text a {
-    color: var(--accent-primary);
-    text-decoration: none;
-    transition: color var(--transition-fast) ease;
-}
-
-.copyright-text a::after {
-    display: none;
-}
-
-.copyright-text a:hover {
-    color: var(--accent-secondary);
-}
-
-.power-by {
-    margin-top: 0.25rem;
-    opacity: 0.8;
-}
-
-/* Footer 工具 */
-.footer-tools {
-    display: flex;
-    gap: 0.75rem;
-}
-
-.back-to-top {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all var(--transition-fast) ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.back-to-top::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-primary);
-    opacity: 0;
-    transition: opacity var(--transition-fast) ease;
-    border-radius: 50%;
-}
-
-.back-to-top i {
-    position: relative;
-    z-index: 1;
-    transition: all var(--transition-fast) ease;
-}
-
-.back-to-top:hover {
-    transform: translateY(-2px) scale(1.1);
-    box-shadow: 0 6px 20px var(--shadow-medium);
-    color: white;
-    border-color: transparent;
-}
-
-.back-to-top:hover::before {
-    opacity: 1;
-}
-
-/* 粒子背景 */
-.particles-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    opacity: 0.3;
-}
-
-#particlesCanvas {
-    width: 100%;
-    height: 100%;
-}
-
-/* 页面加载动画 */
-.page-loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: all var(--transition-slow) ease;
-}
-
-.page-loading-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.loading-container {
-    text-align: center;
-}
-
-.loading-spinner {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1rem;
-}
-
-.spinner-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 3px solid transparent;
-    border-top-color: var(--accent-primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-.spinner-ring:nth-child(2) {
-    width: 60%;
-    height: 60%;
-    top: 20%;
-    left: 20%;
-    border-top-color: var(--accent-secondary);
-    animation-duration: 1.5s;
-    animation-direction: reverse;
-}
-
-.spinner-ring:nth-child(3) {
-    width: 40%;
-    height: 40%;
-    top: 30%;
-    left: 30%;
-    border-top-color: #28a745;
-    animation-duration: 2s;
-}
-
-.loading-text {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -618,12 +166,162 @@ document.addEventListener('DOMContentLoaded', function() {
     initParticles();
     initPageLoading();
     initScrollEffects();
+    initReadingProgress();
+    initImageViewer();
 });
+
+// 阅读进度条功能
+function initReadingProgress() {
+    const progressBar = document.getElementById('readingProgress');
+    if (!progressBar) return;
+    
+    // 只在文章页面显示进度条
+    const isPostPage = document.querySelector('.single-post');
+    if (!isPostPage) {
+        progressBar.style.display = 'none';
+        return;
+    }
+    
+    window.addEventListener('scroll', function() {
+        // 计算滚动进度
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        
+        // 更新进度条宽度
+        progressBar.style.width = scrolled + '%';
+        
+        // 添加动画效果
+        if (scrolled > 0) {
+            progressBar.classList.add('active');
+        } else {
+            progressBar.classList.remove('active');
+        }
+    });
+}
+
+// 图片查看器功能
+function initImageViewer() {
+    // 只在文章页面初始化图片查看器
+    const postContent = document.querySelector('.post-content');
+    if (!postContent) return;
+    
+    // 创建图片查看器容器
+    const viewer = document.createElement('div');
+    viewer.className = 'image-viewer';
+    viewer.innerHTML = `
+        <div class="image-viewer-overlay"></div>
+        <div class="image-viewer-container">
+            <img src="" alt="" class="viewer-image">
+            <div class="viewer-controls">
+                <button class="viewer-prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="viewer-next"><i class="fas fa-chevron-right"></i></button>
+                <button class="viewer-close"><i class="fas fa-times"></i></button>
+                <button class="viewer-zoom-in"><i class="fas fa-search-plus"></i></button>
+                <button class="viewer-zoom-out"><i class="fas fa-search-minus"></i></button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(viewer);
+    
+    // 获取所有文章中的图片
+    const images = postContent.querySelectorAll('img');
+    let currentIndex = 0;
+    let scale = 1;
+    
+    // 为每个图片添加点击事件
+    images.forEach((img, index) => {
+        // 添加可点击的样式
+        img.style.cursor = 'zoom-in';
+        
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentIndex = index;
+            scale = 1;
+            openViewer(img.src, img.alt);
+        });
+    });
+    
+    // 打开图片查看器
+    function openViewer(src, alt) {
+        const viewerImage = viewer.querySelector('.viewer-image');
+        viewerImage.src = src;
+        viewerImage.alt = alt || '';
+        viewerImage.style.transform = `scale(${scale})`;
+        
+        viewer.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // 关闭图片查看器
+    function closeViewer() {
+        viewer.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // 查看上一张图片
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        scale = 1;
+        openViewer(images[currentIndex].src, images[currentIndex].alt);
+    }
+    
+    // 查看下一张图片
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        scale = 1;
+        openViewer(images[currentIndex].src, images[currentIndex].alt);
+    }
+    
+    // 放大图片
+    function zoomIn() {
+        scale = Math.min(scale + 0.2, 3);
+        viewer.querySelector('.viewer-image').style.transform = `scale(${scale})`;
+    }
+    
+    // 缩小图片
+    function zoomOut() {
+        scale = Math.max(scale - 0.2, 0.5);
+        viewer.querySelector('.viewer-image').style.transform = `scale(${scale})`;
+    }
+    
+    // 绑定事件
+    viewer.querySelector('.viewer-close').addEventListener('click', closeViewer);
+    viewer.querySelector('.viewer-prev').addEventListener('click', prevImage);
+    viewer.querySelector('.viewer-next').addEventListener('click', nextImage);
+    viewer.querySelector('.viewer-zoom-in').addEventListener('click', zoomIn);
+    viewer.querySelector('.viewer-zoom-out').addEventListener('click', zoomOut);
+    viewer.querySelector('.image-viewer-overlay').addEventListener('click', closeViewer);
+    
+    // 键盘快捷键
+    document.addEventListener('keydown', function(e) {
+        if (!viewer.classList.contains('active')) return;
+        
+        switch(e.key) {
+            case 'Escape':
+                closeViewer();
+                break;
+            case 'ArrowLeft':
+                prevImage();
+                break;
+            case 'ArrowRight':
+                nextImage();
+                break;
+            case '+':
+                zoomIn();
+                break;
+            case '-':
+                zoomOut();
+                break;
+        }
+    });
+}
 
 // 回到顶部功能
 function initBackToTop() {
     const backToTop = document.getElementById('backToTop');
     
+    // 监听滚动事件，控制按钮显示/隐藏
     window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
             backToTop.classList.add('show');
@@ -632,11 +330,25 @@ function initBackToTop() {
         }
     });
     
-    backToTop.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+    // 点击事件 - 平滑滚动到顶部
+    backToTop.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // 添加点击动画效果
+        backToTop.classList.add('clicked');
+        
+        // 平滑滚动到顶部
+        const scrollToTop = () => {
+            const c = document.documentElement.scrollTop || document.body.scrollTop;
+            if (c > 0) {
+                window.requestAnimationFrame(scrollToTop);
+                window.scrollTo(0, c - c / 8);
+            } else {
+                backToTop.classList.remove('clicked');
+            }
+        };
+        
+        window.requestAnimationFrame(scrollToTop);
     });
 }
 
