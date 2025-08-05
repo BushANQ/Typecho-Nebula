@@ -140,7 +140,7 @@ Twitter|https://twitter.com/yourname|fab fa-twitter
 
 ---
 
-## 目前已知存在的BUG
+## 目前已知存在的问题
    - 手机端兼容性目前较差
    - 归档页面暂未完工
    - 手机端的折叠菜单存在无法正常展开的BUG
