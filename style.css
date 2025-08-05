@@ -1383,7 +1383,7 @@ table tr:hover {
     position: fixed;
     top: 1rem;
     right: 1rem;
-    z-index: 1002;
+    z-index: 1001;
     width: 45px;
     height: 45px;
     background: var(--bg-secondary);
@@ -1393,6 +1393,56 @@ table tr:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  
+  /* 修复移动端菜单显示层级和样式 */
+  #nav-menu {
+    z-index: 1000 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    background: var(--bg-primary) !important;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    transform: translateY(-20px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px var(--shadow-medium);
+    padding: 2rem;
+  }
+  
+  #nav-menu.show {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+  
+  #nav-menu a {
+    width: 80% !important;
+    max-width: 300px !important;
+    text-align: center !important;
+    margin: 0.5rem 0 !important;
+    padding: 1rem 1.5rem !important;
+    font-size: 1.1rem !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+  }
+  
+  #nav-menu a:hover {
+    background: var(--accent-primary) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
   }
   
   /* 确保三条横线显示 */
@@ -1448,6 +1498,125 @@ table tr:hover {
 }
 
 /* 小屏幕设备优化 */
+@media (max-width: 767px) {
+  /* 更激进的头部隐藏效果 */
+  #header.scrolled {
+    transform: translateY(-60px);
+  }
+  
+  /* 确保按钮固定位置 */
+  .theme-toggle-container {
+    position: fixed;
+    top: 0.8rem;
+    left: 0.8rem;
+    z-index: 1002;
+  }
+  
+  .mobile-menu-toggle {
+    position: fixed;
+    top: 0.8rem;
+    right: 0.8rem;
+    z-index: 1001;
+  }
+  
+  /* 调整按钮间距 */
+  .theme-toggle-container + .mobile-menu-toggle {
+    right: 0.8rem;
+  }
+  
+  /* 优化菜单项间距 */
+  #nav-menu a {
+    margin: 0.75rem 0 !important;
+    padding: 1.2rem 2rem !important;
+    font-size: 1.2rem !important;
+  }
+  
+  /* 优化主要内容区域 */
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+  
+  .post, .widget {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+  
+  /* 优化文章标题 */
+  .post-title {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
+  
+  /* 优化文章摘要 */
+  .post-excerpt {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  /* 优化分页 */
+  .pagination {
+    margin: 2rem 0;
+  }
+  
+  .pagination a, .pagination span {
+    padding: 0.75rem 1rem;
+    margin: 0 0.25rem;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 移除悬停效果，使用点击效果 */
+  .post-card:hover {
+    transform: none;
+  }
+  
+  .post-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 优化按钮触摸反馈 */
+  .btn:active,
+  button:active,
+  .mobile-menu-toggle:active,
+  .theme-toggle:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+  
+  /* 优化链接触摸反馈 */
+  a:active {
+    opacity: 0.7;
+    transition: opacity 0.1s ease;
+  }
+}
+
+/* 横屏模式优化 */
+@media (max-width: 991px) and (orientation: landscape) {
+  #nav-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  #nav-menu a {
+    width: auto !important;
+    min-width: 120px !important;
+    margin: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* 超小屏幕设备优化 */
 @media (max-width: 767px) {
   /* 滚动时头部隐藏效果 */
   #header {
@@ -3726,6 +3895,91 @@ body.menu-open {
         overflow-x: auto;
         white-space: nowrap;
     }
+}
+
+/* ===== 暗色模式移动端优化 ===== */
+
+/* 暗色模式下的移动端菜单按钮和主题切换按钮 */
+[data-theme="dark"] .mobile-menu-toggle {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .mobile-menu-toggle span {
+  background: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+/* 暗色模式下的移动端菜单 */
+[data-theme="dark"] #nav-menu {
+  background: rgba(26, 26, 26, 0.95) !important;
+  backdrop-filter: blur(20px);
+}
+
+[data-theme="dark"] #nav-menu a {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] #nav-menu a:hover {
+  background: var(--accent-primary) !important;
+  color: white !important;
+  border-color: var(--accent-primary);
+}
+
+/* 修复移动端菜单在不同主题下的显示 */
+@media (max-width: 991px) {
+  [data-theme="dark"] .mobile-menu-toggle.active {
+    background: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+  }
+  
+  [data-theme="dark"] .mobile-menu-toggle.active span {
+    background: white !important;
+  }
+}
+
+/* 移动端性能优化 */
+@media (max-width: 991px) {
+  /* 启用硬件加速 */
+  .mobile-menu-toggle,
+  .theme-toggle,
+  #nav-menu,
+  #header {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* 优化动画性能 */
+  .mobile-menu-toggle span {
+    will-change: transform, opacity;
+  }
+  
+  #nav-menu a {
+    will-change: transform;
+  }
+}
+
+/* 移动端无障碍优化 */
+@media (max-width: 991px) {
+  .mobile-menu-toggle {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+  
+  .mobile-menu-toggle:focus {
+    box-shadow: 0 0 0 3px var(--accent-primary);
+  }
+  
+  #nav-menu a:focus {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
     
     /* 手机端侧边栏优化 */
     .widget {

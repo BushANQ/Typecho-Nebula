@@ -25,8 +25,161 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <!-- Favicon -->
+    <?php if ($this->options->favicon): ?>
+    <link rel="icon" href="<?php $this->options->favicon() ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php $this->options->favicon() ?>" type="image/x-icon">
+    <?php endif; ?>
+    
+    <!-- 自定义字体 -->
+    <?php if ($this->options->customFont): ?>
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('<?php $this->options->customFont() ?>');
+        }
+        body {
+            font-family: 'CustomFont', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+    <?php endif; ?>
+    
+    <!-- 动态背景样式 -->
+    <?php if ($this->options->dynamicBackground && $this->options->dynamicBackground != 'off'): ?>
+    <style>
+        #dynamic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            #dynamic-background { display: none; }
+        }
+    </style>
+    <?php endif; ?>
+    
+    <!-- 背景图片样式 -->
+    <?php if ($this->options->wallpaperPC || $this->options->wallpaperMobile): ?>
+    <style>
+        body {
+            <?php if ($this->options->wallpaperPC): ?>
+            background-image: url('<?php $this->options->wallpaperPC() ?>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            <?php endif; ?>
+        }
+        @media (max-width: 768px) {
+            body {
+                <?php if ($this->options->wallpaperMobile): ?>
+                background-image: url('<?php $this->options->wallpaperMobile() ?>');
+                <?php endif; ?>
+                background-attachment: scroll;
+            }
+        }
+    </style>
+    <?php endif; ?>
+    
+    <!-- 列表动画样式 -->
+    <?php if ($this->options->listAnimate && $this->options->listAnimate != 'off'): ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .post-item {
+            animation: <?php $this->options->listAnimate() ?> 0.8s ease-in-out;
+        }
+        .post-item:nth-child(2) { animation-delay: 0.1s; }
+        .post-item:nth-child(3) { animation-delay: 0.2s; }
+        .post-item:nth-child(4) { animation-delay: 0.3s; }
+        .post-item:nth-child(5) { animation-delay: 0.4s; }
+    </style>
+    <?php endif; ?>
+    
+    <!-- 代码高亮样式 -->
+    <?php if ($this->options->prismTheme): ?>
+    <link rel="stylesheet" href="<?php $this->options->prismTheme() ?>">
+    <?php else: ?>
+    <link rel="stylesheet" href="//npm.elemecdn.com/prismjs@1.29.0/themes/prism.min.css">
+    <?php endif; ?>
+    <script src="//npm.elemecdn.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="//npm.elemecdn.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="//npm.elemecdn.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="//npm.elemecdn.com/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <link rel="stylesheet" href="//npm.elemecdn.com/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <style>
+        pre[class*="language-"] {
+            position: relative;
+            border-radius: 8px;
+            margin: 1.5em 0;
+            overflow: auto;
+        }
+        .copy-to-clipboard-button {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .copy-to-clipboard-button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+        .line-numbers .line-numbers-rows {
+            border-right: 1px solid #ddd;
+        }
+    </style>
+    
+    <!-- 网页标题切换 -->
+    <?php if ($this->options->documentTitle): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var originalTitle = document.title;
+            var hiddenTitle = '<?php $this->options->documentTitle() ?>';
+            
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    document.title = hiddenTitle;
+                } else {
+                    document.title = originalTitle;
+                }
+            });
+        });
+    </script>
+    <?php endif; ?>
+    
+    <!-- 自定义head内容 -->
+    <?php if ($this->options->customHeadEnd): ?>
+    <?php $this->options->customHeadEnd() ?>
+    <?php endif; ?>
+    
+    <!-- 自定义CSS -->
+    <?php if ($this->options->customCSS): ?>
+    <style type="text/css">
+        <?php $this->options->customCSS() ?>
+    </style>
+    <?php endif; ?>
 
     <?php $this->header(); ?>
+    
+    <!-- 自定义JavaScript -->
+    <?php if ($this->options->customJS): ?>
+    <script type="text/javascript">
+        <?php $this->options->customJS() ?>
+    </script>
+    <?php endif; ?>
+    
+    <!-- 统计代码 -->
+    <?php if ($this->options->analytics): ?>
+    <?php $this->options->analytics() ?>
+    <?php endif; ?>
 </head>
 <body>
     <!-- 页面加载动画 -->
@@ -191,6 +344,18 @@
                 // 恢复页面滚动
                 body.style.position = '';
                 body.style.width = '';
+                
+                // 添加关闭动画
+                mainNav.style.opacity = '0';
+                mainNav.style.visibility = 'hidden';
+                mainNav.style.transform = 'translateY(-20px)';
+                
+                // 延迟隐藏
+                setTimeout(() => {
+                    if (!mainNav.classList.contains('show')) {
+                        mainNav.style.display = 'none';
+                    }
+                }, 300);
             }
         }
         
@@ -203,6 +368,16 @@
                 // 禁止页面滚动
                 body.style.position = 'fixed';
                 body.style.width = '100%';
+                
+                // 确保菜单可见性
+                mainNav.style.display = 'flex';
+                
+                // 添加动画延迟
+                requestAnimationFrame(() => {
+                    mainNav.style.opacity = '1';
+                    mainNav.style.visibility = 'visible';
+                    mainNav.style.transform = 'translateY(0)';
+                });
             }
         }
         
@@ -221,11 +396,19 @@
         // 监听窗口大小变化
         window.addEventListener('resize', handleResize);
         
-        // 移动端菜单按钮点击事件
-        if (mobileMenuToggle) {
+        // 增强的菜单切换处理
+        if (mobileMenuToggle && mainNav) {
             mobileMenuToggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                
+                // 防止快速点击
+                if (mobileMenuToggle.disabled) return;
+                mobileMenuToggle.disabled = true;
+                
+                setTimeout(() => {
+                    mobileMenuToggle.disabled = false;
+                }, 300);
                 
                 if (mainNav.classList.contains('show')) {
                     closeMobileMenu();
@@ -233,6 +416,11 @@
                     openMobileMenu();
                 }
             });
+            
+            // 触摸事件优化
+            mobileMenuToggle.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            }, { passive: false });
         }
         
         // 点击菜单项后自动关闭菜单
@@ -275,6 +463,39 @@
                     e.preventDefault();
                 }
             }, { passive: false });
+        }
+        
+        // 窗口大小改变时自动关闭菜单
+        window.addEventListener('resize', function() {
+            if (!isMobile() && mainNav && mainNav.classList.contains('show')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // 页面可见性改变时关闭菜单
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && mainNav && mainNav.classList.contains('show')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // 优化菜单项点击体验
+        if (mainNav) {
+            const navLinks = mainNav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                // 添加触摸反馈
+                link.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                }, { passive: true });
+                
+                link.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                }, { passive: true });
+                
+                link.addEventListener('touchcancel', function() {
+                    this.style.transform = '';
+                }, { passive: true });
+            });
         }
         
         // 返回顶部功能已移至footer.js中统一处理

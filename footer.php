@@ -139,12 +139,30 @@
             <div class="footer-bottom-content">
                 <div class="copyright">
                     <div class="copyright-text">
-                        <p>&copy; <?php echo date('Y'); ?> <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title(); ?></a>. All rights reserved.</p>
+                        <?php if ($this->options->footerLeft): ?>
+                            <p><?php $this->options->footerLeft() ?></p>
+                        <?php else: ?>
+                            <p>&copy; <?php echo date('Y'); ?> <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title(); ?></a>. All rights reserved.</p>
+                        <?php endif; ?>
+                        
+                        <?php if ($this->options->birthDay): ?>
+                            <p class="site-runtime">
+                                <i class="fas fa-heartbeat"></i>
+                                网站已运行 <span id="site-runtime">-</span>
+                            </p>
+                        <?php endif; ?>
+                        
                         <p class="power-by">
                             Powered by <a href="https://typecho.org" target="_blank" rel="noopener">Typecho</a> 
                             | Theme by <a href="javascript:void(0)" class="theme-info">Nebula</a>
                         </p>
                     </div>
+                </div>
+                
+                <div class="footer-right-content">
+                    <?php if ($this->options->footerRight): ?>
+                        <?php $this->options->footerRight() ?>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="footer-tools">
@@ -558,6 +576,189 @@ window.addEventListener('error', function(e) {
     console.warn('页面出现错误:', e.error);
 });
 </script>
+
+<!-- 动态背景 -->
+<?php if ($this->options->dynamicBackground && $this->options->dynamicBackground != 'off'): ?>
+<div id="dynamic-background"></div>
+<script>
+(function() {
+    if (window.innerWidth <= 768) return; // 移动端不显示
+    
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('dynamic-background');
+    container.appendChild(canvas);
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    const effect = '<?php $this->options->dynamicBackground() ?>';
+    
+    if (effect === 'particles') {
+        // 粒子效果
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 2,
+                vy: (Math.random() - 0.5) * 2,
+                size: Math.random() * 3 + 1
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(74, 144, 226, 0.6)';
+            
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+    } else if (effect === 'waves') {
+        // 波浪效果
+        let time = 0;
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(74, 144, 226, 0.1)';
+            
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height / 2);
+                
+                for (let x = 0; x <= canvas.width; x += 10) {
+                    const y = canvas.height / 2 + Math.sin((x + time + i * 100) * 0.01) * 50;
+                    ctx.lineTo(x, y);
+                }
+                
+                ctx.lineTo(canvas.width, canvas.height);
+                ctx.lineTo(0, canvas.height);
+                ctx.fill();
+            }
+            
+            time += 2;
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+})();
+</script>
+<?php endif; ?>
+
+<!-- 鼠标特效 -->
+<?php if ($this->options->cursorEffects && $this->options->cursorEffects != 'off'): ?>
+<script>
+(function() {
+    if (window.innerWidth <= 768) return; // 移动端不显示
+    
+    const effect = '<?php $this->options->cursorEffects() ?>';
+    
+    if (effect === 'cursor1') {
+        // 彩色粒子
+        document.addEventListener('mousemove', function(e) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                width: 6px;
+                height: 6px;
+                background: hsl(${Math.random() * 360}, 70%, 60%);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                animation: cursorParticle 1s ease-out forwards;
+            `;
+            document.body.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 1000);
+        });
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes cursorParticle {
+                0% { transform: scale(1); opacity: 1; }
+                100% { transform: scale(0); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    } else if (effect === 'cursor2') {
+        // 爱心
+        document.addEventListener('click', function(e) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.cssText = `
+                position: fixed;
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                font-size: 20px;
+                pointer-events: none;
+                z-index: 9999;
+                animation: cursorHeart 2s ease-out forwards;
+            `;
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 2000);
+        });
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes cursorHeart {
+                0% { transform: translateY(0) scale(1); opacity: 1; }
+                100% { transform: translateY(-100px) scale(0); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+})();
+</script>
+<?php endif; ?>
+
+<!-- 网站运行时间 -->
+<?php if ($this->options->birthDay): ?>
+<script>
+function updateRunTime() {
+    const birthDay = new Date('<?php $this->options->birthDay() ?>');
+    const now = new Date();
+    const diff = now - birthDay;
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    const runTimeElement = document.getElementById('site-runtime');
+    if (runTimeElement) {
+        runTimeElement.innerHTML = `${days}天${hours}小时${minutes}分${seconds}秒`;
+    }
+}
+
+if (document.getElementById('site-runtime')) {
+    updateRunTime();
+    setInterval(updateRunTime, 1000);
+}
+</script>
+<?php endif; ?>
+
+<!-- 自定义body末尾内容 -->
+<?php if ($this->options->customBodyEnd): ?>
+<?php $this->options->customBodyEnd() ?>
+<?php endif; ?>
 
 <!-- 自定义统计代码 -->
 <?php if ($this->options->analytics): ?>

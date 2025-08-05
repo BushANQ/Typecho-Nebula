@@ -11,6 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  
 function themeConfig($form)
 {
+    // 基础设置
     $logoUrl = new Typecho_Widget_Helper_Form_Element_Text(
         'logoUrl',
         null,
@@ -29,12 +30,211 @@ function themeConfig($form)
     );
     $form->addInput($favicon);
 
+    // 网站成立日期
+    $birthDay = new Typecho_Widget_Helper_Form_Element_Text(
+        'birthDay',
+        null,
+        null,
+        _t('网站成立日期（非必填）'),
+        _t('用于显示当前站点已经运行了多少时间。格式：2021/1/1 00:00:00')
+    );
+    $form->addInput($birthDay);
+
+    // 网页标题切换
+    $documentTitle = new Typecho_Widget_Helper_Form_Element_Text(
+        'documentTitle',
+        null,
+        null,
+        _t('网页被隐藏时显示的标题'),
+        _t('在PC端切换网页标签时，网站标题显示的内容。如果不填写，则默认不开启')
+    );
+    $form->addInput($documentTitle);
+
+    // 自定义字体
+    $customFont = new Typecho_Widget_Helper_Form_Element_Text(
+        'customFont',
+        null,
+        null,
+        _t('自定义网站字体（非必填）'),
+        _t('用于修改全站字体，填写字体URL链接（推荐使用woff格式的字体）')
+    );
+    $form->addInput($customFont);
+
+    // 自定义头像源
+    $customAvatarSource = new Typecho_Widget_Helper_Form_Element_Text(
+        'customAvatarSource',
+        null,
+        'https://gravatar.helingqi.com/wavatar/',
+        _t('自定义头像源（非必填）'),
+        _t('用于修改全站头像源地址，填写时务必保证最后有一个/字符')
+    );
+    $form->addInput($customAvatarSource);
+
+    // 动画效果
+    $listAnimate = new Typecho_Widget_Helper_Form_Element_Select(
+        'listAnimate',
+        array(
+            'off' => '关闭（默认）',
+            'fadeIn' => 'fadeIn',
+            'fadeInUp' => 'fadeInUp',
+            'fadeInDown' => 'fadeInDown',
+            'fadeInLeft' => 'fadeInLeft',
+            'fadeInRight' => 'fadeInRight',
+            'bounceIn' => 'bounceIn',
+            'bounceInUp' => 'bounceInUp',
+            'bounceInDown' => 'bounceInDown',
+            'slideInUp' => 'slideInUp',
+            'slideInDown' => 'slideInDown',
+            'zoomIn' => 'zoomIn',
+            'rotateIn' => 'rotateIn'
+        ),
+        'off',
+        _t('选择一款炫酷的列表动画'),
+        _t('开启后，列表将会显示所选择的炫酷动画')
+    );
+    $form->addInput($listAnimate);
+
+    // 鼠标特效
+    $cursorEffects = new Typecho_Widget_Helper_Form_Element_Select(
+        'cursorEffects',
+        array(
+            'off' => '关闭（默认）',
+            'cursor1' => '彩色粒子',
+            'cursor2' => '爱心',
+            'cursor3' => '星星',
+            'cursor4' => '烟花',
+            'cursor5' => '气泡',
+            'cursor6' => '雪花',
+            'cursor7' => '彩虹',
+            'cursor8' => '文字'
+        ),
+        'off',
+        _t('选择鼠标特效'),
+        _t('用于开启炫酷的鼠标特效')
+    );
+    $form->addInput($cursorEffects);
+
+    // 背景设置
+    $dynamicBackground = new Typecho_Widget_Helper_Form_Element_Select(
+        'dynamicBackground',
+        array(
+            'off' => '关闭（默认）',
+            'particles' => '粒子效果',
+            'waves' => '波浪效果',
+            'geometric' => '几何图形',
+            'stars' => '星空效果',
+            'matrix' => '矩阵效果',
+            'bubbles' => '气泡效果'
+        ),
+        'off',
+        _t('是否开启动态背景图（仅限PC）'),
+        _t('用于设置PC端动态背景，如果您填写了下方PC端静态壁纸，将优先展示静态壁纸')
+    );
+    $form->addInput($dynamicBackground);
+
+    $wallpaperPC = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'wallpaperPC',
+        null,
+        null,
+        _t('PC端网站背景图片（非必填）'),
+        _t('PC端网站的背景图片，不填写时显示默认的灰色。格式：图片URL地址 或 随机图片api')
+    );
+    $form->addInput($wallpaperPC);
+
+    $wallpaperMobile = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'wallpaperMobile',
+        null,
+        null,
+        _t('移动端网站背景图片（非必填）'),
+        _t('移动端网站的背景图片，不填写时显示默认的灰色。格式：图片URL地址 或 随机图片api')
+    );
+    $form->addInput($wallpaperMobile);
+
+    // 首页轮播图
+    $indexCarousel = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'indexCarousel',
+        null,
+        null,
+        _t('首页轮播图'),
+        _t('用于显示首页轮播图。格式：图片地址 || 跳转链接 || 标题 （中间使用两个竖杠分隔），一行一个')
+    );
+    $form->addInput($indexCarousel);
+
+    // 首页推荐文章
+    $indexRecommend = new Typecho_Widget_Helper_Form_Element_Text(
+        'indexRecommend',
+        null,
+        null,
+        _t('首页推荐文章（非必填）'),
+        _t('用于显示推荐文章。格式：文章的id || 文章的id （中间使用两个竖杠分隔）')
+    );
+    $form->addInput($indexRecommend);
+
+    // 首页置顶文章
+    $indexSticky = new Typecho_Widget_Helper_Form_Element_Text(
+        'indexSticky',
+        null,
+        null,
+        _t('首页置顶文章（非必填）'),
+        _t('格式：文章的ID || 文章的ID || 文章的ID （中间使用两个竖杠分隔）')
+    );
+    $form->addInput($indexSticky);
+
+    // 首页热门文章
+    $indexHot = new Typecho_Widget_Helper_Form_Element_Radio(
+        'indexHot',
+        array('off' => '关闭（默认）', 'on' => '开启'),
+        'off',
+        _t('是否开启首页热门文章'),
+        _t('开启后，网站首页将会显示浏览量最多的4篇热门文章')
+    );
+    $form->addInput($indexHot);
+
+    // 自定义缩略图
+    $thumbnail = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'thumbnail',
+        null,
+        null,
+        _t('自定义缩略图'),
+        _t('用于修改主题默认缩略图，图片地址，一行一个。不填写时，则使用主题内置的默认缩略图')
+    );
+    $form->addInput($thumbnail);
+
+    // 懒加载图
+    $lazyload = new Typecho_Widget_Helper_Form_Element_Text(
+        'lazyload',
+        null,
+        null,
+        _t('自定义懒加载图'),
+        _t('用于修改主题默认懒加载图，格式：图片地址')
+    );
+    $form->addInput($lazyload);
+
+    // 底部栏设置
+    $footerLeft = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'footerLeft',
+        null,
+        '© 2024 Nebula8 Theme',
+        _t('自定义底部栏左侧内容（非必填）'),
+        _t('用于修改全站底部左侧内容（移动端上方）')
+    );
+    $form->addInput($footerLeft);
+
+    $footerRight = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'footerRight',
+        null,
+        '<a href="/feed/" target="_blank">RSS</a> <a href="/sitemap.xml" target="_blank" style="margin-left: 15px">MAP</a>',
+        _t('自定义底部栏右侧内容（非必填）'),
+        _t('用于修改全站底部右侧内容（移动端下方）')
+    );
+    $form->addInput($footerRight);
+
     $customCSS = new Typecho_Widget_Helper_Form_Element_Textarea(
         'customCSS',
         null,
         null,
         _t('自定义CSS'),
-        _t('在这里添加自定义的CSS代码')
+        _t('在这里添加自定义的CSS代码，无需填写style标签')
     );
     $form->addInput($customCSS);
 
@@ -43,9 +243,27 @@ function themeConfig($form)
         null,
         null,
         _t('自定义JavaScript'),
-        _t('在这里添加自定义的JavaScript代码')
+        _t('在这里添加自定义的JavaScript代码，无需填写script标签')
     );
     $form->addInput($customJS);
+
+    $customHeadEnd = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'customHeadEnd',
+        null,
+        null,
+        _t('自定义增加&lt;head&gt;&lt;/head&gt;里内容（非必填）'),
+        _t('此处用于在&lt;head&gt;&lt;/head&gt;标签里增加自定义内容，例如：可以填写引入第三方css、js等等')
+    );
+    $form->addInput($customHeadEnd);
+
+    $customBodyEnd = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'customBodyEnd',
+        null,
+        null,
+        _t('自定义&lt;body&gt;&lt;/body&gt;末尾位置内容（非必填）'),
+        _t('此处用于填写在&lt;body&gt;&lt;/body&gt;标签末尾位置的内容，例如：可以填写引入第三方js脚本等等')
+    );
+    $form->addInput($customBodyEnd);
 
     $socialLinks = new Typecho_Widget_Helper_Form_Element_Textarea(
         'socialLinks',
@@ -72,6 +290,93 @@ GitHub|https://github.com/yourname|fab fa-github
         _t('侧边栏显示')
     );
     $form->addInput($sidebarBlock->multiMode());
+
+    // 侧边栏热门文章
+    $asideHotNum = new Typecho_Widget_Helper_Form_Element_Select(
+        'asideHotNum',
+        array(
+            'off' => '关闭（默认）',
+            '3' => '显示3条',
+            '4' => '显示4条',
+            '5' => '显示5条',
+            '6' => '显示6条',
+            '7' => '显示7条',
+            '8' => '显示8条'
+        ),
+        'off',
+        _t('是否开启热门文章栏'),
+        _t('用于控制是否开启热门文章栏')
+    );
+    $form->addInput($asideHotNum);
+
+    // 侧边栏广告
+    $asideAd = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'asideAd',
+        null,
+        null,
+        _t('侧边栏广告'),
+        _t('用于设置侧边栏广告。格式：广告图片 || 跳转链接 （中间使用两个竖杠分隔）')
+    );
+    $form->addInput($asideAd);
+
+    // 自定义侧边栏模块
+    $customAside = new Typecho_Widget_Helper_Form_Element_Textarea(
+        'customAside',
+        null,
+        null,
+        _t('自定义侧边栏模块'),
+        _t('用于自定义侧边栏模块，请填写前端代码')
+    );
+    $form->addInput($customAside);
+
+    // 代码高亮样式设置
+    $prismTheme = new Typecho_Widget_Helper_Form_Element_Select(
+        'prismTheme',
+        array(
+            '//npm.elemecdn.com/prismjs@1.29.0/themes/prism.min.css' => 'prism（默认）',
+            '//npm.elemecdn.com/prismjs@1.29.0/themes/prism-dark.min.css' => 'prism-dark',
+            '//npm.elemecdn.com/prismjs@1.29.0/themes/prism-okaidia.min.css' => 'prism-okaidia',
+            '//npm.elemecdn.com/prismjs@1.29.0/themes/prism-solarizedlight.min.css' => 'prism-solarizedlight',
+            '//npm.elemecdn.com/prismjs@1.29.0/themes/prism-tomorrow.min.css' => 'prism-tomorrow',
+            '//npm.elemecdn.com/prismjs@1.29.0/themes/prism-twilight.min.css' => 'prism-twilight',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-a11y-dark.min.css' => 'prism-a11y-dark',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-atom-dark.min.css' => 'prism-atom-dark',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-base16-ateliersulphurpool.light.min.css' => 'prism-base16-ateliersulphurpool.light',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-cb.min.css' => 'prism-cb',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-coldark-cold.min.css' => 'prism-coldark-cold',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-coldark-dark.min.css' => 'prism-coldark-dark',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-darcula.min.css' => 'prism-darcula',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-dracula.min.css' => 'prism-dracula',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-duotone-dark.min.css' => 'prism-duotone-dark',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-duotone-earth.min.css' => 'prism-duotone-earth',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-duotone-forest.min.css' => 'prism-duotone-forest',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-duotone-light.min.css' => 'prism-duotone-light',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-duotone-sea.min.css' => 'prism-duotone-sea',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-duotone-space.min.css' => 'prism-duotone-space',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-ghcolors.min.css' => 'prism-ghcolors',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-gruvbox-dark.min.css' => 'prism-gruvbox-dark',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-hopscotch.min.css' => 'prism-hopscotch',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-lucario.min.css' => 'prism-lucario',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-material-dark.min.css' => 'prism-material-dark',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-material-light.min.css' => 'prism-material-light',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-material-oceanic.min.css' => 'prism-material-oceanic',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-night-owl.min.css' => 'prism-night-owl',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-nord.min.css' => 'prism-nord',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-pojoaque.min.css' => 'prism-pojoaque',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-shades-of-purple.min.css' => 'prism-shades-of-purple',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-synthwave84.min.css' => 'prism-synthwave84',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-vs.min.css' => 'prism-vs',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-vsc-dark-plus.min.css' => 'prism-vsc-dark-plus',
+            '//npm.elemecdn.com/prism-themes@1.9.0/themes/prism-xonokai.min.css' => 'prism-xonokai',
+            '//npm.elemecdn.com/prism-theme-one-light-dark@1.0.4/prism-onelight.min.css' => 'prism-onelight',
+            '//npm.elemecdn.com/prism-theme-one-light-dark@1.0.4/prism-onedark.min.css' => 'prism-onedark',
+            '//npm.elemecdn.com/prism-theme-one-dark@1.0.0/prism-onedark.min.css' => 'prism-onedark2'
+        ),
+        '//npm.elemecdn.com/prismjs@1.29.0/themes/prism.min.css',
+        _t('代码高亮样式'),
+        _t('选择一款您喜欢的代码高亮样式')
+    );
+    $form->addInput($prismTheme);
 
     $analytics = new Typecho_Widget_Helper_Form_Element_Textarea(
         'analytics',
