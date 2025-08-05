@@ -123,10 +123,7 @@
         </div>
     </header>
 
-    <!-- 返回顶部按钮 -->
-    <button id="backToTop" class="back-to-top" title="返回顶部">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+
 
     <main id="body" class="main-content">
         <div class="container">
@@ -175,95 +172,158 @@
             }, 300);
         });
         
-        // 移动端菜单
+        // 移动端菜单增强
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const mainNav = document.getElementById('nav-menu');
         const body = document.body;
         
-        // 检查屏幕宽度，如果是移动设备，默认折叠菜单
-        function checkScreenSize() {
-            if (window.innerWidth <= 991) {
-                mainNav.classList.remove('show');
+        // 检查是否为移动设备
+        function isMobile() {
+            return window.innerWidth <= 991;
+        }
+        
+        // 关闭移动端菜单
+        function closeMobileMenu() {
+            if (mobileMenuToggle && mainNav) {
                 mobileMenuToggle.classList.remove('active');
+                mainNav.classList.remove('show');
                 body.classList.remove('menu-open');
+                // 恢复页面滚动
+                body.style.position = '';
+                body.style.width = '';
             }
         }
         
-        // 初始检查
-        checkScreenSize();
-        
-        // 窗口大小改变时重新检查
-        window.addEventListener('resize', checkScreenSize);
-        
-        mobileMenuToggle.addEventListener('click', function() {
-            // 先移除所有类，确保状态重置
-            if (mainNav.classList.contains('show')) {
-                this.classList.remove('active');
-                mainNav.classList.remove('show');
-                body.classList.remove('menu-open');
-            } else {
-                this.classList.add('active');
+        // 打开移动端菜单
+        function openMobileMenu() {
+            if (mobileMenuToggle && mainNav) {
+                mobileMenuToggle.classList.add('active');
                 mainNav.classList.add('show');
                 body.classList.add('menu-open');
+                // 禁止页面滚动
+                body.style.position = 'fixed';
+                body.style.width = '100%';
             }
-        });
+        }
         
-        // 点击菜单项后自动关闭菜单
-        const navLinks = mainNav.querySelectorAll('a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 991) {
-                    mobileMenuToggle.classList.remove('active');
-                    mainNav.classList.remove('show');
-                    body.classList.remove('menu-open');
+        // 检查屏幕宽度变化
+        function handleResize() {
+            if (!isMobile()) {
+                closeMobileMenu();
+            }
+        }
+        
+        // 初始化
+        if (isMobile()) {
+            closeMobileMenu();
+        }
+        
+        // 监听窗口大小变化
+        window.addEventListener('resize', handleResize);
+        
+        // 移动端菜单按钮点击事件
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (mainNav.classList.contains('show')) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
                 }
             });
-        });
+        }
+        
+        // 点击菜单项后自动关闭菜单
+        if (mainNav) {
+            const navLinks = mainNav.querySelectorAll('a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (isMobile() && mainNav.classList.contains('show')) {
+                        // 延迟关闭，让用户看到点击效果
+                        setTimeout(() => {
+                            closeMobileMenu();
+                        }, 150);
+                    }
+                });
+            });
+        }
         
         // 点击菜单外区域关闭菜单
         document.addEventListener('click', function(event) {
-            if (window.innerWidth <= 991 && 
+            if (isMobile() && 
+                mainNav && 
+                mainNav.classList.contains('show') &&
                 !mainNav.contains(event.target) && 
-                !mobileMenuToggle.contains(event.target) && 
-                mainNav.classList.contains('show')) {
-                mobileMenuToggle.classList.remove('active');
-                mainNav.classList.remove('show');
-                body.classList.remove('menu-open');
+                !mobileMenuToggle.contains(event.target)) {
+                closeMobileMenu();
             }
         });
         
-        // 返回顶部
-        const backToTop = document.getElementById('backToTop');
-        
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('show');
-            } else {
-                backToTop.classList.remove('show');
+        // ESC键关闭菜单
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && isMobile() && mainNav && mainNav.classList.contains('show')) {
+                closeMobileMenu();
             }
         });
         
-        backToTop.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'auto'
-            });
-        });
+        // 防止菜单滚动穿透
+        if (mainNav) {
+            mainNav.addEventListener('touchmove', function(e) {
+                if (isMobile() && mainNav.classList.contains('show')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        }
+        
+        // 返回顶部功能已移至footer.js中统一处理
         
         // 头部滚动效果
         const header = document.getElementById('header');
         let lastScrollTop = 0;
+        let ticking = false;
         
-        window.addEventListener('scroll', function() {
+        function updateHeader() {
             const scrollTop = window.pageYOffset;
             
+            // 基础滚动效果
             if (scrollTop > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
             
+            // 移动端滚动隐藏效果
+            if (window.innerWidth <= 767) {
+                if (scrollTop > lastScrollTop && scrollTop > 200) {
+                    // 向下滚动且超过200px时隐藏
+                    header.style.transform = 'translateY(-100%)';
+                } else if (scrollTop < lastScrollTop || scrollTop <= 100) {
+                    // 向上滚动或接近顶部时显示
+                    header.style.transform = 'translateY(0)';
+                }
+            } else {
+                // 桌面端重置transform
+                header.style.transform = '';
+            }
+            
             lastScrollTop = scrollTop;
+            ticking = false;
+        }
+        
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        });
+        
+        // 窗口大小改变时重置样式
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 767) {
+                header.style.transform = '';
+            }
         });
         
         // 搜索框增强

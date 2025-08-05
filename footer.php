@@ -321,34 +321,80 @@ function initImageViewer() {
 function initBackToTop() {
     const backToTop = document.getElementById('backToTop');
     
+    if (!backToTop) {
+        console.warn('返回顶部按钮未找到');
+        return;
+    }
+    
+    let isScrolling = false;
+    
     // 监听滚动事件，控制按钮显示/隐藏
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 300) {
             backToTop.classList.add('show');
         } else {
             backToTop.classList.remove('show');
         }
+    }
+    
+    // 使用节流优化滚动性能
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(handleScroll, 10);
     });
+    
+    // 初始检查
+    handleScroll();
     
     // 点击事件 - 平滑滚动到顶部
     backToTop.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        
+        if (isScrolling) return;
+        
+        isScrolling = true;
         
         // 添加点击动画效果
         backToTop.classList.add('clicked');
         
-        // 平滑滚动到顶部
-        const scrollToTop = () => {
-            const c = document.documentElement.scrollTop || document.body.scrollTop;
-            if (c > 0) {
-                window.requestAnimationFrame(scrollToTop);
-                window.scrollTo(0, c - c / 8);
-            } else {
-                backToTop.classList.remove('clicked');
-            }
-        };
-        
-        window.requestAnimationFrame(scrollToTop);
+        // 使用现代浏览器的平滑滚动
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            // 监听滚动结束
+            const checkScrollEnd = () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop <= 0) {
+                    backToTop.classList.remove('clicked');
+                    isScrolling = false;
+                } else {
+                    requestAnimationFrame(checkScrollEnd);
+                }
+            };
+            requestAnimationFrame(checkScrollEnd);
+        } else {
+            // 降级方案：自定义平滑滚动
+            const scrollToTop = () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > 0) {
+                    window.scrollTo(0, scrollTop - scrollTop / 8);
+                    requestAnimationFrame(scrollToTop);
+                } else {
+                    backToTop.classList.remove('clicked');
+                    isScrolling = false;
+                }
+            };
+            requestAnimationFrame(scrollToTop);
+        }
     });
 }
 
